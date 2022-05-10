@@ -10,26 +10,36 @@
           X
         </div>
       </div>
-      <form class="form">
+      <div class="form">
         <div class="formRow">
           <VInput
             label="имя"
             placeholder="имя"
+            @onInput="val => onInput('name', val)"
           />
         </div>
         <div class="formRow">
           <VInput
             label="телефон"
             placeholder="номер телефона"
+            onlyNumbers
+            @onInput="val => onInput('phone', parseInt(val))"
           />
         </div>
         <div class="formRow">
-          <VSelect label="Начальник" />
+          <VSelect
+            :options="data.allEmployees"
+            label="Начальник"
+            @onSelectChange="onSelectChange"
+          />
         </div>
-        <VButton class="btn">
+        <VButton
+          class="btn"
+          @click.native="setEmpoloyee"
+        >
           СОХРАНИТЬ
         </VButton>
-      </form>
+      </div>
     </div>
   </div>
 </template>
@@ -45,6 +55,42 @@ export default {
     VInput,
     VSelect,
     VButton
+  },
+
+  props: {
+    data: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+
+  data () {
+    return {
+      empoloyee: {
+        id: 0,
+        name: '',
+        phone: ''
+      }
+    }
+  },
+
+  methods: {
+    onInput (name, val) {
+      this.empoloyee[name] = val
+    },
+
+    onSelectChange (val) {
+      this.empoloyee.parent = val
+    },
+
+    setEmpoloyee () {
+      if (this.empoloyee.name.length || this.empoloyee.phone.length) {
+        this.empoloyee.id = this.data.allEmployees.length + 1
+        this.$emit('setEmpoloyee', {...this.empoloyee})
+      }
+      this.empoloyee.name = ''
+      this.empoloyee.phone = ''
+    }
   }
 }
 </script>
@@ -55,8 +101,9 @@ export default {
     top: 50%;
     left: 50%;
     min-width: 550px;
+    background: #6495ed;
+    border-radius: 20px;
     transform: translate(-50%, -50%);
-    background: beige;
   }
 
   .container {

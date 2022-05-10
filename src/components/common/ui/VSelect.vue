@@ -18,10 +18,10 @@
         <li
           v-for="(option, ndx) in options"
           :key="ndx"
-          @click="isOpen = false"
+          @click="selectOption(option)"
           class="optionItem"
         >
-          {{ option.i }}
+          {{ option.name }}
         </li>
       </ul>
     </div>
@@ -38,11 +38,6 @@ export default {
       default: ''
     },
 
-    selectedOption: {
-      type: String,
-      default: ''
-    },
-
     options: {
       type: Array,
       default: () => []
@@ -51,7 +46,16 @@ export default {
 
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      selectedOption: ''
+    }
+  },
+
+  methods: {
+    selectOption (option) {
+      this.selectedOption = option.name
+      this.$emit('onSelectChange', option.id)
+      this.isOpen = false
     }
   }
 }
@@ -77,13 +81,17 @@ export default {
 
   .selectInput {
     position: relative;
+    display: flex;
+    align-items: center;
     width: 100%;
-    height: 47px;
+    height: 50px;
     border: none;
     border-radius: 8px;
     background: #fff;
     text-indent: 10px;
     outline: none;
+    font-size: 16px;
+    color: black;
     cursor: pointer;
   }
 
@@ -101,6 +109,7 @@ export default {
 
   .optionsList {
     position: absolute;
+    overflow: hidden;
     top: 106%;
     width: 100%;
     background: #fff;
@@ -115,7 +124,7 @@ export default {
     transition: background .3s;
   }
 
-  .optionItem:nth-child(2) {
+  .optionItem:nth-child(even) {
     background: #d5d0d0;
   }
 

@@ -1,7 +1,5 @@
 <template>
-  <div
-    v-if="component"
-    class="TheModal">
+  <div class="TheModal">
     <div
       class="overlay"
       @click.self="close"
@@ -9,6 +7,7 @@
       <component
         :is='component'
         :data="data"
+        @setEmpoloyee="setEmpoloyee"
         @close="close"
       />
     </div>
@@ -24,32 +23,35 @@ export default {
     AddEmployeeModal: () => import('./modals/AddEmployeeModal.vue')
   },
 
-  data () {
-    return {
-      component: null,
-      data: null
+  props: {
+    component: {
+      type: String,
+      default: ''
+    },
+
+    data: {
+      type: Object,
+      default: () => ({})
     }
   },
 
-  beforeMount () {
-    this.$modal.event.$on('open', this.open)
+  mounted () {
+    lockBody()
   },
 
   beforeDestroy () {
-    this.$modal.event.$off('close', this.close)
+    unlockBody()
   },
 
   methods: {
-    open ({component, data}) {
-      lockBody()
-      this.component = component
-      this.data = data
-    },
-
     close () {
       unlockBody()
-      this.component = null
-      this.data = null
+      this.$emit('closeModal')
+    },
+
+    setEmpoloyee (val) {
+      this.$emit('setEmpoloyee', {...val})
+      this.close()
     }
   }
 }
