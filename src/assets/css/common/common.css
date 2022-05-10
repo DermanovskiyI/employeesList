@@ -58,7 +58,7 @@ button {
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 685px;
+  max-width: 1000px;
   height: 100%;
   margin: 0 auto;
 }

@@ -3,20 +3,14 @@
     <div class="wrapper">
       <div class="container">
         <router-view/>
-        <TheModal />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import TheModal from './components/modal/TheModal.vue'
 export default {
-  name: 'App',
-
-  components: {
-    TheModal
-  }
+  name: 'App'
 }
 </script>
 
