@@ -122,6 +122,11 @@ export default {
     },
 
     sorting (sortType) {
+      if (this.sortingBy === 'ascending') {
+        sortList(this.employeesList, 'descending', sortType)
+      } else {
+        sortList(this.employeesList, 'ascending', sortType)
+      }
       this.sortNested(this.employeesList, sortType)
       this.sortingBy = this.sortingBy === 'ascending' ? 'descending' : 'ascending'
     },
